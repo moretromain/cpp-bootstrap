@@ -6,7 +6,7 @@ ROOT_FOLDER=${PWD}/../..
 
 if [[ ${BUILD_CONFIGURATION:+x} ]]; then
     BUILD_FOLDER=${ROOT_FOLDER}/build/macos-xcode-$(echo ${BUILD_CONFIGURATION} | tr '[:upper:]' '[:lower:]')
-    BUILD_TYPE="-DCMAKE_BUILD_TYPE=${BUILD_CONFIGURATION}"
+    BUILD_TYPE="--config ${BUILD_CONFIGURATION}"
 else
     BUILD_FOLDER=${ROOT_FOLDER}/build/macos-xcode
     BUILD_TYPE=""
