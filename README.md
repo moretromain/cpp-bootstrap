@@ -34,12 +34,24 @@ Target dependencies can be either other targets or specific files (import librar
 The 'private' target macros declare target properties that won't be propagated through dependencies.
 
 All those macros are just built on top of raw CMake project, target and their associated properties, so it is still possible to mix pure and custom CMake code in the CMakeLists.txt files.
+The builder is not incompatible with CMake ```find_package()``` mechanism, and it is entirely possible to use it to import external dependencies, such as Boost, Qt or whatever else.
 
-The builder takes care of setting basic C/CXX compiler flags that are suited for common development.
+The builder takes care of setting basic C/CXX compiler flags that are suited for common development:
+* enable C++17
+* define DEBUG/NDEBUG
+* set optimization flags
+* enable/disable a few useful common compiler warnings/errors
+* Windows:
+  * define UNICODE
+  * define __cplusplus to the right version (required by some common libs, like boost)
+  * define usual STL stuff (iterator debugging, deprecation warning etc.)
+* MacOS
+  * remove RPATH stuff to avoid absolute paths in there
+  * define usual Clang/ObjC stuff (don't link with ObjC runtime etc.)
 
-The builder will also generate an "target_api.h" header for easier symbol management (defines a TARGET_API preprocessor macro that expands to the plaform specific stuff -dllexport/import, attribute visibility etc.-).
+The builder will also generate a per-target ```target_api.h``` header for easier symbol management (defines a ```TARGET_API``` preprocessor macro that expands to the plaform specific stuff -dllexport/import, attribute visibility etc.-).
 
-A basic CMakeLists.txt would look like:
+A basic ```CMakeLists.txt``` would look like:
 
 ```
 target(MyTarget)
@@ -59,6 +71,7 @@ target_defs(
 
 target_deps(
   MyOtherTarget
+  Boost::system
 )
 
 if(WINDOWS_BUILD)
@@ -78,7 +91,7 @@ See template projects in the src folder for more examples.
 
 Requirements:
 * CMake
-* C++ Toolchain (MSVC, Clang/LLVM, GCC etc.)
+* Modern C++ Toolchain (MSVC, Clang/LLVM, GCC, with C++17 support)
 
 Build:
-* Use "build-[platform]" script to automatically launch the CMake GUI with predefined build folders
+* Use ```build-[platform]``` script to automatically launch the CMake GUI with predefined build folders

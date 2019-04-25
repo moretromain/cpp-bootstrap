@@ -41,6 +41,8 @@ macro(has_flag var flag result)
     endif()
 endmacro()
 
+# --
+
 macro(add_flag var flag)
     has_flag(${var} ${flag} found)
     if(NOT found)
@@ -68,6 +70,8 @@ macro(add_c_cxx_flags)
     set(CMAKE_CXX_FLAGS "${cxx_flags}" CACHE STRING "Flags used by the CXX compiler during all build types." FORCE)    
 endmacro()
 
+# --
+
 macro(add_c_flags)
     set(c_flags ${CMAKE_C_FLAGS})
 
@@ -78,6 +82,8 @@ macro(add_c_flags)
     set(CMAKE_C_FLAGS "${c_flags}" CACHE STRING "Flags used by the C compiler during all build types." FORCE)
 endmacro()
 
+# --
+
 macro(add_cxx_flags)
     set(cxx_flags ${CMAKE_CXX_FLAGS})
 
@@ -87,6 +93,8 @@ macro(add_cxx_flags)
 
     set(CMAKE_CXX_FLAGS "${cxx_flags}" CACHE STRING "Flags used by the CXX compiler during all build types." FORCE)    
 endmacro()
+
+# --
 
 macro(add_c_cxx_flags_config config)
     set(c_flags ${CMAKE_C_FLAGS_${config}})
@@ -105,12 +113,13 @@ endmacro()
 
 macro(set_build_flags)
     set(CMAKE_CXX_STANDARD          17)
-    set(CMAKE_CXX_STANDARD_REQUIRED	ON)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS        ON)
 
     if(WINDOWS_BUILD)
         add_c_cxx_flags(/MP)
 
+        # https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus
         add_cxx_flags(/Zc:__cplusplus)
 
         add_c_cxx_flags_config(DEBUG            /DDEBUG=1  /D_DEBUG=1  /D_HAS_ITERATOR_DEBUGGING=1 /D_SECURE_SCL=1)
