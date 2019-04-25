@@ -27,7 +27,7 @@ matrix:
       script: ./builder/scripts/build-macos-xcode.command
     - os: windows
       env: [windows-debug, BUILD_CONFIGURATION=Debug]
-      script: ./builder/scripts/build-windows-msvc.command
+      script: ./builder/scripts/build-windows-msvc.cmd
     - os: windows
       env: [windows-release, BUILD_CONFIGURATION=Release]
-      script: ./builder/scripts/build-windows-msvc.command
+      script: ./builder/scripts/build-windows-msvc.cmd
