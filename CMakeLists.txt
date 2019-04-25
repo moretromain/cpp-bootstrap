@@ -5,6 +5,6 @@ add_subdirectory(builder)
 
 project(${BUILDER_ROOT_PROJECT_NAME} C CXX)
 
-set_build_flags()
+builder_configure_platform()
 
 add_subdirectory(src)
