@@ -3,7 +3,7 @@
 cd "`dirname "${0}"`"
 
 ROOT_FOLDER=${PWD}/../..
-BUILD_FOLDER=${ROOT_FOLDER}/build/macos-xcode-$(echo ${BUILD_CONFIGURATION} | tr '[:upper:]' '[:lower:]')
+BUILD_FOLDER=${ROOT_FOLDER}/build/macos-xcode
 
 mkdir -p ${BUILD_FOLDER}
 cd ${BUILD_FOLDER}

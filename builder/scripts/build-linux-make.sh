@@ -3,7 +3,7 @@
 cd "`dirname "${0}"`"
 
 ROOT_FOLDER=${PWD}/../..
-BUILD_FOLDER=${ROOT_FOLDER}/build/linux-make-${BUILD_CONFIGURATION,,}
+BUILD_FOLDER=${ROOT_FOLDER}/build/linux-make
 
 mkdir -p ${BUILD_FOLDER}
 cd ${BUILD_FOLDER}
