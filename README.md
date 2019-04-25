@@ -49,6 +49,14 @@ target_sources(
   myTarget.h
 )
 
+target_private_defs(
+  USE_SOME_STUFF_BUT_DONT_TELL_OTHERS=1
+)
+
+target_defs(
+  USE_SOME_STUFF_AND_TELL_THE_WORLD=1
+)
+
 target_deps(
   MyOtherTarget
 )
