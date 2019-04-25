@@ -1,7 +1,7 @@
 setlocal enableextensions
 
 set ROOT_FOLDER=%cd%\..\..
-set BUILD_FOLDER=%ROOT_FOLDER%\windows-msvc15
+set BUILD_FOLDER=%ROOT_FOLDER%\build\windows-msvc15
 
 mkdir %BUILD_FOLDER%
 cd %BUILD_FOLDER%
