@@ -138,7 +138,7 @@ endif()
 add_shared_library()
 ```
 
-There can be more than one target per ```CMakeLists.txt```, but bear in mind that builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove anything. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()s`` with different names.
+There can be more than one target per ```CMakeLists.txt```, but bear in mind that builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove anything. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()s``` with different names.
 You can always share things through CMake variables, or even CMake's cache if required. There is no added magic here, there's plenty of it in CMake already.
 
 See template projects in the ```src``` folder for more examples.
