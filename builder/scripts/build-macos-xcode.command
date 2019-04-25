@@ -15,5 +15,5 @@ fi
 mkdir -p ${BUILD_FOLDER}
 cd ${BUILD_FOLDER}
 
-cmake -G"Xcode" ${ROOT_FOLDER} ${BUILD_TYPE}
-cmake --build ${BUILD_FOLDER}
+cmake -G"Xcode" ${ROOT_FOLDER}
+cmake --build ${BUILD_FOLDER} ${BUILD_TYPE}
