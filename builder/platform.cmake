@@ -150,7 +150,7 @@ macro(builder_configure_platform)
         set(CMAKE_INSTALL_RPATH_USE_LINK_PATH   FALSE)
         set(CMAKE_INSTALL_RPATH                 "")
     elseif(LINUX_BUILD)
-        add_c_cxx_flags(-ffunction-sections -fdata-sections -fno-constant-cfstrings -Wsign-compare -Wpointer-arith -Wshadow)        
+        add_c_cxx_flags(-ffunction-sections -fdata-sections -Wsign-compare -Wpointer-arith -Wshadow)        
     
         add_cxx_flags(-fno-threadsafe-statics)
             
