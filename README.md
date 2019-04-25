@@ -17,6 +17,10 @@ The builder is made of three main components:
 * ```platform.cmake```: a set of CMake macros and utilities to configure compiler and platform related stuff, mainly through the ```builder_configure_platform()``` macro
 * ```target.cmake```: a set of CMake macros that are used to manage build targets (i.e. CMake projects, libraries, executables etc.)
 
+Most of the time, there is a one-to-one mapping between a CMake project and a generated build target, i.e. one project leads to one build target. And most of the time, build targets are all made of the same things: source files, include directories, preprocessor defines, dependencies, and nothing more.
+The builder's target notion is built on top of this. A target is just a CMake project with a few associated variables that leads to a generated build target.
+You just have to tell the builder which is which, and then let it translate everything to the CMake world.
+
 Once the builder has been imported into a CMake tree, build targets are declared and populated through a set of CMake macros that take care of what their names suggest:
 ```
 target()
@@ -64,6 +68,9 @@ The builder will also generate a per-target ```target_api.h``` header for easier
 The root ```CMakeLists.txt``` shall at least include:
 
 ```
+# The builder uses very basic CMake stuff, any 3.X version should do..
+cmake_minimum_required(...)
+
 # Before doing anything CMake related, import the builder folder,
 # this will prepare the builder to be used for whatever's coming next
 add_subdirectory(builder)
@@ -74,17 +81,18 @@ project(${BUILDER_ROOT_PROJECT_NAME} C CXX)
 # It's time to configure the build for the current platform, set a few compiler flags etc.
 builder_configure_platform()
 
-# Do whatever CMake stuff is required
+# Do whatever CMake stuff is required, more compiler options, shared variables, cache magic...
 ...
 
 # Import external dependencies
 find_package(...)
 
-# Add internal target folders
+# Add internal folders as in any CMake tree
 add_subdirectory(...)
 ```
 
-A basic ```CMakeLists.txt``` would look like:
+
+A basic target ```CMakeLists.txt``` would look like:
 
 ```
 target(MyTarget)
@@ -120,11 +128,14 @@ endif()
 add_shared_library()
 ```
 
+There can be more than one target per ```CMakeLists.txt```, but bear in mind that the builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()'''s with different name. You can always share things through CMake variables, or even CMake's cache if required.
+
 See template projects in the src folder for more examples.
 
 Requirements:
-* CMake
+* Windows or MacOS (for now, and probably forever, only MSVC and Clang/LLVM are supported)
+* CMake (any version should do, but hey, pick the last one it has a nicer logo :))
 * Modern C++ Toolchain (MSVC, Clang/LLVM, GCC, with C++17 support)
 
 Build:
-* Use ```build-[platform]``` script to automatically launch the CMake GUI with predefined build folders
+* Use ```build-[platform]``` script to automatically launch the CMake GUI with predefined out-of-tree build folders
