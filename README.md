@@ -143,7 +143,7 @@ You can always share things through CMake variables, or even CMake's cache if re
 
 See template projects in the ```src``` folder for more examples.
 
-# Miscellaneous
+## Miscellaneous
 
 Requirements:
 * Windows or MacOS (for now, and probably forever, only MSVC and Clang/LLVM are supported)
