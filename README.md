@@ -128,7 +128,7 @@ endif()
 add_shared_library()
 ```
 
-There can be more than one target per ```CMakeLists.txt```, but bear in mind that the builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()'''s with different name. You can always share things through CMake variables, or even CMake's cache if required.
+There can be more than one target per ```CMakeLists.txt```, but bear in mind that the builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()```s with different name. You can always share things through CMake variables, or even CMake's cache if required. There is no added magic here, there's plenty of it in CMake already.
 
 See template projects in the src folder for more examples.
 
@@ -139,3 +139,7 @@ Requirements:
 
 Build:
 * Use ```build-[platform]``` script to automatically launch the CMake GUI with predefined out-of-tree build folders
+
+Todo:
+* Basic CI to ensure emtpy projects are still building
+* More examples and templates
