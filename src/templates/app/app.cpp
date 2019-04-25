@@ -15,4 +15,9 @@ int main(int inArgc, char* inArgv[])
 {
     return 0;
 }
+#elif SYS_LINUX
+int main(int inArgc, char* inArgv[])
+{
+    return 0;
+}
 #endif

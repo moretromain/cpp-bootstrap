@@ -14,6 +14,13 @@
   #else
     #define SYS_32BIT 1
   #endif
+#elif defined(__linux__)
+  #define SYS_LINUX 1
+  #ifdef __LP64__
+    #define SYS_64BIT 1
+  #else
+    #define SYS_32BIT 1
+  #endif
 #else
 #error "Unsupported platform"
 #endif

@@ -3,7 +3,7 @@ if(WIN32)
 elseif(APPLE)
     set(MACOS_BUILD TRUE CACHE INTERNAL "MacOS Build")
 else()
-    message(FATAL_ERROR "Unsupported platform.")
+    set(LINUX_BUILD TRUE CACHE INTERNAL "Linux Build")
 endif()
 
 # --
