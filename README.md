@@ -105,26 +105,32 @@ add_subdirectory(...)
 A basic ```CMakeLists.txt``` that declares one target would look like:
 
 ```
+# Declare a new target called 'MyTarget'
 target(MyTarget)
 
+# Add a couple of source files to it
 target_sources(
   myTarget.cpp
   myTarget.h
 )
 
+# Set private preprocessor definitions that won't be propagated through dependencies (hidden)
 target_private_defs(
   USE_SOME_STUFF_BUT_DONT_TELL_OTHERS=1
 )
 
+# Set preprocessor definitions that will be propagated through dependencies (exposed)
 target_defs(
   USE_SOME_STUFF_AND_TELL_THE_WORLD=1
 )
 
+# Add a couple of dependencies to other previously defined or imported targets
 target_deps(
   MyOtherTarget
   Boost::system
 )
 
+# Add platform-specific dependencies to additional libraries/frameworks
 if(WINDOWS_BUILD)
   target_deps(
     lib/someWindowsLib.lib
@@ -135,10 +141,15 @@ elseif(MACOS_BUILD)
   )
 endif()
 
+# Set a custom name for the build output (optional)
+target_output_name("My Target")
+
+# And finally, tell CMake to gather all the information we set so far for our target,
+# and create a shared library build target out of all this
 add_shared_library()
 ```
 
-There can be more than one target per ```CMakeLists.txt```, but bear in mind that builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove anything. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()s``` with different names.
+There can be more than one target per ```CMakeLists.txt```, but bear in mind that builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove anything. If you need multiple build targets, the best way to achieve this is to declare multiple ```target()s``` with different names.
 You can always share things through CMake variables, or even CMake's cache if required. There is no added magic here, there's plenty of it in CMake already.
 
 See template projects in the ```src``` folder for more examples.
