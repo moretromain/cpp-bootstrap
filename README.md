@@ -157,7 +157,7 @@ See template projects in the ```src``` folder for more examples.
 ## Miscellaneous
 
 Requirements:
-* Windows or MacOS (for now, and probably forever, only MSVC and Clang/LLVM are supported)
+* Windows, MacOS or Linux
 * CMake (any version should do, but hey, pick the last one it has a nicer logo :))
 * Modern C++ Toolchain (MSVC, Clang/LLVM, GCC, with C++17 support)
 

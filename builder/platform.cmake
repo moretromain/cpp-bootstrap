@@ -128,7 +128,6 @@ macro(builder_configure_platform)
         add_c_cxx_flags_config(RELWITHDEBINFO   /DNDEBUG=1 /D_NDEBUG=1 /D_HAS_ITERATOR_DEBUGGING=0 /D_SECURE_SCL=0)
         
         add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -DUNICODE -D_UNICODE)
-        
     elseif(MACOS_BUILD)
         add_c_cxx_flags(-ffunction-sections -fdata-sections -fno-constant-cfstrings -Wsign-compare -Wpointer-arith -Wshadow)        
 
@@ -150,6 +149,15 @@ macro(builder_configure_platform)
         set(CMAKE_BUILD_WITH_INSTALL_RPATH      FALSE)
         set(CMAKE_INSTALL_RPATH_USE_LINK_PATH   FALSE)
         set(CMAKE_INSTALL_RPATH                 "")
+    elseif(LINUX_BUILD)
+        add_c_cxx_flags(-ffunction-sections -fdata-sections -fno-constant-cfstrings -Wsign-compare -Wpointer-arith -Wshadow)        
+    
+        add_cxx_flags(-fno-threadsafe-statics)
+            
+        add_c_cxx_flags_config(DEBUG            -DDEBUG=1   -D_DEBUG=1)
+        add_c_cxx_flags_config(RELEASE          -DNDEBUG=1  -D_NDEBUG=1)
+        add_c_cxx_flags_config(MINSIZEREL       -DNDEBUG=1  -D_NDEBUG=1)
+        add_c_cxx_flags_config(RELWITHDEBINFO   -DNDEBUG=1  -D_NDEBUG=1)
     endif()
  endmacro()
  
