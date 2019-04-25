@@ -3,7 +3,8 @@ language: cpp
 
 matrix:
   include:
-    - os: osx
+    - name: MacOS XCode Debug
+      os: osx
       osx_image: xcode10.2
       compiler: clang
       before_script:
@@ -12,7 +13,8 @@ matrix:
         - cmake -G"Xcode" ..
       script:
         - cmake --build . --config Debug
-    - os: osx
+    - name: MacOS XCode Release
+      os: osx
       osx_image: xcode10.2
       compiler: clang
       before_script:
@@ -21,21 +23,24 @@ matrix:
         - cmake -G"Xcode" ..
       script:
         - cmake --build . --config Release
-    - os: windows
+    - name: Windows MSVC Debug
+      os: windows
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
         - cmake -G "Visual Studio 15 2017" -A x64 ..
       script:
         - cmake --build . --config Debug
-    - os: windows
+    - name: Windows MSVC Release
+      os: windows
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
         - cmake -G "Visual Studio 15 2017" -A x64 ..
       script:
-        - cmake --build . --config Debug
-    - os: linux
+        - cmake --build . --config Release
+    - name: Linux GCC Debug
+      os: linux
       dist: xenial
       sudo: false
       compiler: gcc
@@ -45,7 +50,8 @@ matrix:
         - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug .. 
       script:
         - cmake --build .
-    - os: linux
+    - name: Linux GCC Release
+      os: linux
       dist: xenial
       sudo: false
       compiler: gcc
