@@ -168,5 +168,4 @@ Build:
 * Use ```build-[platform]``` script to automatically launch the CMake GUI with predefined out-of-tree build folders
 
 Todo:
-* Basic CI to ensure emtpy projects are still building
 * More examples and templates

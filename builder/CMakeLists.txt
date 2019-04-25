@@ -33,3 +33,4 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 include(platform)
 include(target)
+include(qt)
