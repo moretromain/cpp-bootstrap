@@ -10,6 +10,7 @@ cpp-bootstrap is a thin wrapper around CMake that allows to easily create a mult
 
 cpp-bootstrap is not intended to be a full-blown production-ready build system. It is more a quick-start template for designing small and cross-platform C++ codebase architectures without messing with IDE project wizards and other sources of joy and happiness.
 
+## What's inside and how to use it ?
 The best way to use it is to embed the ```builder``` folder into a CMake tree, and then use the provided macros instead of pure CMake calls to populate the ```CMakeLists.txt``` files.
 
 The builder is made of three main components:
@@ -17,11 +18,11 @@ The builder is made of three main components:
 * ```platform.cmake```: a set of CMake macros and utilities to configure compiler and platform related stuff, mainly through the ```builder_configure_platform()``` macro
 * ```target.cmake```: a set of CMake macros that are used to manage build targets (i.e. CMake projects, libraries, executables etc.)
 
-Most of the time, there is a one-to-one mapping between a CMake project and a generated build target, i.e. one project leads to one build target. And most of the time, build targets are all made of the same things: source files, include directories, preprocessor defines, dependencies, and nothing more.
-The builder's target notion is built on top of this. A target is just a CMake project with a few associated variables that leads to a generated build target.
+Most of the time, there is a one-one mapping between a CMake project and a generated build target, i.e. one project leads to one build target. And most of the time, build targets are all made of the same wood: source files, include directories, preprocessor defines, dependencies (target or libraries), and nothing more.
+The builder's target notion is built on top of this. A target is a simple CMake project with a few associated variables that leads to a generated build target.
 You just have to tell the builder which is which, and then let it translate everything to the CMake world.
 
-Once the builder has been imported into a CMake tree, build targets are declared and populated through a set of CMake macros that take care of what their names suggest:
+To do so, build targets are declared and populated through a set of CMake macros that take care of what their names suggest:
 ```
 target()
 target_include_dirs()
@@ -50,6 +51,8 @@ The 'private' target macros declare target properties that won't be propagated t
 All those macros are just built on top of raw CMake projects, targets and their associated properties, so it is still possible to mix pure and custom CMake code in the ```CMakeLists.txt``` files. Feel free to browse the builder's code for more information.
 The builder is fully compatible with CMake ```find_package()``` mechanism, and it is entirely possible to let CMake do all the heavy lifting when importing external dependencies, such as Boost, Qt or whatever else.
 
+## How does the builder impact my build ?
+
 The builder takes care of setting basic C/CXX compiler flags that are suited for common development:
 * enable C++17
 * define DEBUG/NDEBUG
@@ -58,41 +61,48 @@ The builder takes care of setting basic C/CXX compiler flags that are suited for
 * Windows
   * define UNICODE
   * define __cplusplus to the right version (required by some common libs, like boost)
-  * define usual STL stuff (iterator debugging, deprecation warning etc.)
+  * define usual STL stuff (iterator debugging, deprecation warnings etc.)
 * MacOS
   * remove RPATH stuff to avoid absolute paths in there
   * define usual Clang/ObjC stuff (don't link with ObjC runtime etc.)
 
 The builder will also generate a per-target ```target_api.h``` header for easier symbol management (defines a ```TARGET_API``` preprocessor macro that expands to the plaform specific stuff -dllexport/import, attribute visibility etc.-).
 
+## What are the bare requirements in my CMake code ?
+
+### Root ```CMakeLists.txt```
+
 The root ```CMakeLists.txt``` shall at least include:
 
 ```
-# The builder uses very basic CMake stuff, any 3.X version should do..
+# The builder uses very basic CMake stuff, any 3.x version should do..
 cmake_minimum_required(...)
 
 # Before doing anything CMake related, import the builder folder,
 # this will prepare the builder to be used for whatever's coming next
 add_subdirectory(builder)
 
-# Create the main project, this will be the Visual Studio Solution, or the XCode Workspace etc.
+# Create the main project, this will be the Visual Studio Solution,
+# the XCode Workspace or the MakeFile root target
 project(${BUILDER_ROOT_PROJECT_NAME} C CXX)
 
-# It's time to configure the build for the current platform, set a few compiler flags etc.
+# It's time to configure the builder for the current platform, set a few compiler flags etc.
 builder_configure_platform()
 
-# Do whatever CMake stuff is required, more compiler options, shared variables, cache magic...
+# Do whatever CMake stuff is required, more compiler options,
+# shared variables, checks, cache magic...
 ...
 
-# Import external dependencies
+# Import external dependencies, if any
 find_package(...)
 
 # Add internal folders as in any CMake tree
 add_subdirectory(...)
 ```
 
+### Per-folder ```CMakeLists.txt```
 
-A basic target ```CMakeLists.txt``` would look like:
+A basic ```CMakeLists.txt``` that declares one target would look like:
 
 ```
 target(MyTarget)
@@ -128,9 +138,12 @@ endif()
 add_shared_library()
 ```
 
-There can be more than one target per ```CMakeLists.txt```, but bear in mind that the builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()```s with different name. You can always share things through CMake variables, or even CMake's cache if required. There is no added magic here, there's plenty of it in CMake already.
+There can be more than one target per ```CMakeLists.txt```, but bear in mind that builder's ```target()``` calls CMake's ```project()```, and once you declared a target, you can only add stuff to it, not change, interact or remove anything. If you need multiple independent targets, the best way to achieve this is to declare multiple ```target()s`` with different names.
+You can always share things through CMake variables, or even CMake's cache if required. There is no added magic here, there's plenty of it in CMake already.
 
-See template projects in the src folder for more examples.
+See template projects in the ```src``` folder for more examples.
+
+# Miscellaneous
 
 Requirements:
 * Windows or MacOS (for now, and probably forever, only MSVC and Clang/LLVM are supported)
