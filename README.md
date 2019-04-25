@@ -1,4 +1,7 @@
 # cpp-bootstrap
+
+[![Build Status](https://travis-ci.com/moretromain/cpp-bootstrap.svg?branch=master)](https://travis-ci.com/moretromain/cpp-bootstrap)
+
 Cross-Platform CMake based minimalistic build system for C/C++
 
 cpp-bootstrap is a thin wrapper around CMake that allows to easily create a multi-target project/solution that supports the following target types:
