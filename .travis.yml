@@ -3,31 +3,56 @@ language: cpp
 
 matrix:
   include:
+    - os: osx
+      osx_image: xcode10.2
+      compiler: clang
+      before_script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir build && cd build
+        - cmake -G"Xcode" ..
+      script:
+        - cmake --build . --config Debug
+    - os: osx
+      osx_image: xcode10.2
+      compiler: clang
+      before_script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir build && cd build
+        - cmake -G"Xcode" ..
+      script:
+        - cmake --build . --config Release
+    - os: windows
+      before_script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir build && cd build
+        - cmake -G "Visual Studio 15 2017" -A x64 ..
+      script:
+        - cmake --build . --config Debug
+    - os: windows
+      before_script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir build && cd build
+        - cmake -G "Visual Studio 15 2017" -A x64 ..
+      script:
+        - cmake --build . --config Debug
     - os: linux
       dist: xenial
       sudo: false
       compiler: gcc
-      env: [linux-debug, BUILD_CONFIGURATION=Debug]
-      script: ./builder/scripts/build-linux-make.sh
+      before_script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir build && cd build
+        - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug .. 
+      script:
+        - cmake --build .
     - os: linux
       dist: xenial
       sudo: false
       compiler: gcc
-      env: [linux-release, BUILD_CONFIGURATION=Release]
-      script: ./builder/scripts/build-linux-make.sh
-    - os: osx
-      osx_image: xcode10.2
-      compiler: clang
-      env: [macos-debug, BUILD_CONFIGURATION=Debug]
-      script: ./builder/scripts/build-macos-xcode.command
-    - os: osx
-      osx_image: xcode10.2
-      compiler: clang
-      env: [macos-release, BUILD_CONFIGURATION=Release]
-      script: ./builder/scripts/build-macos-xcode.command
-    - os: windows
-      env: [windows-debug, BUILD_CONFIGURATION=Debug]
-      script: ./builder/scripts/build-windows-msvc.cmd
-    - os: windows
-      env: [windows-release, BUILD_CONFIGURATION=Release]
-      script: ./builder/scripts/build-windows-msvc.cmd
+      before_script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir build && cd build
+        - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release .. 
+      script:
+        - cmake --build .
+  

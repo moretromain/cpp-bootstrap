@@ -2,8 +2,10 @@ if(WIN32)
     set(WINDOWS_BUILD TRUE CACHE INTERNAL "Windows Build")
 elseif(APPLE)
     set(MACOS_BUILD TRUE CACHE INTERNAL "MacOS Build")
-else()
+elseif(UNIX)
     set(LINUX_BUILD TRUE CACHE INTERNAL "Linux Build")
+else()
+    message(FATAL_ERROR "Cannot detect platform")
 endif()
 
 # --
