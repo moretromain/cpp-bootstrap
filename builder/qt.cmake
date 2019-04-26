@@ -1,6 +1,4 @@
 macro(builder_import_qt_modules)
-    message(STATUS "CMAKE_LIBRARY_ARCHITECTURE=${CMAKE_LIBRARY_ARCHITECTURE}")
-    message(STATUS "CMAKE_SYSTEM_PREFIX_PATH=${CMAKE_SYSTEM_PREFIX_PATH}")
     set(qtdir $ENV{QTDIR})
     if (qtdir)
         list(APPEND CMAKE_PREFIX_PATH "${qtdir}")

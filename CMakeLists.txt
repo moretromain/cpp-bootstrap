@@ -9,7 +9,6 @@ builder_configure_platform()
 
 if(LINUX_BUILD)
     builder_import_qt_modules(
-        Charts
         Concurrent
         Core
         Concurrent
