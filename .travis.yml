@@ -43,6 +43,8 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
+      env:
+        - QTDIR=/usr
       addons:
         apt:
           packages:
@@ -58,6 +60,8 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
+      env:
+        - QTDIR=/usr
       addons:
         apt:
           packages:
