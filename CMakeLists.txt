@@ -20,8 +20,6 @@ if(LINUX_BUILD)
         3DCore
         3DInput
         3DQuick
-        3DQuickExtras
-        3DQuickRender
     )
 endif()
 
