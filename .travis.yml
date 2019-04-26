@@ -48,8 +48,7 @@ matrix:
           packages:
             - qt5-default
             - libqt5qml5
-            - liblibqt5quick5
-            - liblibqt5quickcontrols25
+            - libqt5quick5
             - qt5-image-formats-plugins
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
@@ -67,8 +66,7 @@ matrix:
           packages:
             - qt5-default
             - libqt5qml5
-            - liblibqt5quick5
-            - liblibqt5quickcontrols25
+            - libqt5quick5
             - qt5-image-formats-plugins
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
