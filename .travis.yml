@@ -43,11 +43,12 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
-      install:
+      env:
+        - QTDIR=/usr/lib/x86_64-linux-gnu
+      before_install:
         - sudo apt-get update -qq
-        - sudo apt-get install apt-file qt5-default
-        - sudo apt-file update
-        - sudo apt-file search Qt5CoreConfig.cmake
+      install:
+        - sudo apt-get install qt5-default
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
@@ -59,11 +60,12 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
-      install:
+      env:
+        - QTDIR=/usr/lib/x86_64-linux-gnu
+      before_install:
         - sudo apt-get update -qq
-        - sudo apt-get install apt-file qt5-default
-        - sudo apt-file update
-        - sudo apt-file search Qt5CoreConfig.cmake
+      install:
+        - sudo apt-get install qt5-default
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
