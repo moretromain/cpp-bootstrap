@@ -43,10 +43,10 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
-      before_install:
-        - sudo apt-get update -qq
-      install:
-        - sudo apt-get install qt5-default
+      addons:
+        apt:
+          packages:
+            - qt5-default
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
@@ -58,10 +58,10 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
-      before_install:
-        - sudo apt-get update -qq
-      install:
-        - sudo apt-get install qt5-default
+      addons:
+        apt:
+          packages:
+            - qt5-default
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
