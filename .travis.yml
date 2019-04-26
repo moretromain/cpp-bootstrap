@@ -49,6 +49,7 @@ matrix:
             - qt5-default
             - qtdeclarative5-dev
             - qtmultimedia5-dev
+            - qt3d5-dev
             - qt5-image-formats-plugins
             - libqt5libqgtk2
             - qtwayland5
@@ -78,6 +79,7 @@ matrix:
             - qt5-default
             - qtdeclarative5-dev
             - qtmultimedia5-dev
+            - qt3d5-dev
             - qt5-image-formats-plugins
             - libqt5libqgtk2
             - qtwayland5
