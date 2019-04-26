@@ -14,7 +14,6 @@ if(LINUX_BUILD)
         Concurrent
         Qml
         Quick
-        QuickControls2
         Multimedia
         Widgets
         OpenGL
