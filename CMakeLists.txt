@@ -12,7 +12,6 @@ if(LINUX_BUILD)
         Concurrent
         Core
         Concurrent
-        DataVisualization
         Qml
         Quick
         QuickControls2
