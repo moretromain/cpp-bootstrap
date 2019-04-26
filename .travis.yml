@@ -51,6 +51,7 @@ matrix:
             - qtmultimedia5-dev
             - qt3d5-dev
             - qt5-image-formats-plugins
+            - qtdeclarative5-qt3d-plugin
             - libqt5libqgtk2
             - qtwayland5
             - unixodbc-dev
@@ -81,6 +82,7 @@ matrix:
             - qtmultimedia5-dev
             - qt3d5-dev
             - qt5-image-formats-plugins
+            - qtdeclarative5-qt3d-plugin
             - libqt5libqgtk2
             - qtwayland5
             - unixodbc-dev
