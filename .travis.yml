@@ -44,7 +44,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-        - QTDIR=/usr/lib/x86_64-linux-gnu
+        - QTDIR=/usr/lib/x86_64-linux-gnu/cmake
       before_install:
         - sudo apt-get update -qq
       install:
@@ -61,7 +61,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-        - QTDIR=/usr/lib/x86_64-linux-gnu
+        - QTDIR=/usr/lib/x86_64-linux-gnu/cmake
       before_install:
         - sudo apt-get update -qq
       install:
