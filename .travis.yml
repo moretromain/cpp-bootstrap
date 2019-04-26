@@ -61,8 +61,6 @@ matrix:
             - libqt5sql5-psql
             - libwacom-bin
             - libqt5opengl5-dev
-The following NEW packages will be installed:
-
       before_script:
         - cd "${TRAVIS_BUILD_DIR}"
         - mkdir build && cd build
