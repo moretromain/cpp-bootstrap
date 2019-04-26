@@ -43,8 +43,6 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
-      env:
-        - QTDIR=/usr/lib/x86_64-linux-gnu/cmake
       before_install:
         - sudo apt-get update -qq
       install:
@@ -60,8 +58,6 @@ matrix:
       dist: xenial
       sudo: false
       compiler: gcc
-      env:
-        - QTDIR=/usr/lib/x86_64-linux-gnu/cmake
       before_install:
         - sudo apt-get update -qq
       install:
