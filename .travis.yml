@@ -47,8 +47,7 @@ matrix:
         apt:
           packages:
             - qt5-default
-            - libqt5qml5-dev
-            - libqt5quick5-dev
+            - qtdeclarative5-dev
             - qt5-image-formats-plugins
             - libqt5libqgtk2
             - qtwayland5
@@ -76,8 +75,7 @@ matrix:
         apt:
           packages:
             - qt5-default
-            - libqt5qml5-dev
-            - libqt5quick5-dev
+            - qtdeclarative5-dev
             - qt5-image-formats-plugins
             - libqt5libqgtk2
             - qtwayland5
