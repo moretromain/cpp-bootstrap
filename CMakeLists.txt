@@ -7,23 +7,25 @@ project(${BUILDER_ROOT_PROJECT_NAME} C CXX)
 
 builder_configure_platform()
 
-# builder_import_qt_modules(
-#     Charts
-#     Concurrent
-#     Core
-#     Concurrent
-#     DataVisualization
-#     Qml
-#     Quick
-#     QuickControls2
-#     Multimedia
-#     Widgets
-#     OpenGL
-#     3DCore
-#     3DInput
-#     3DQuick
-#     3DQuickExtras
-#     3DQuickRender
-# )
+if(LINUX_BUILD)
+    builder_import_qt_modules(
+        Charts
+        Concurrent
+        Core
+        Concurrent
+        DataVisualization
+        Qml
+        Quick
+        QuickControls2
+        Multimedia
+        Widgets
+        OpenGL
+        3DCore
+        3DInput
+        3DQuick
+        3DQuickExtras
+        3DQuickRender
+    )
+endif()
 
 add_subdirectory(src)
