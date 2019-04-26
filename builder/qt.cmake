@@ -2,8 +2,6 @@ macro(builder_import_qt_modules)
     set(qtdir $ENV{QTDIR})
     if (qtdir)
         list(APPEND CMAKE_PREFIX_PATH "${qtdir}")
-    else()
-        message(WARNING "Cannot find environment variable 'QTDIR'.\nIf required, set it to the current platform QT directory.")
     endif()
 
     foreach(component ${ARGN})
