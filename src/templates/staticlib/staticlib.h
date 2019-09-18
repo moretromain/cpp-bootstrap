@@ -1,7 +1,9 @@
 #include "staticlib_api.h"
+#include "staticlib_namespace.h"
 #include <core.h>
 
-namespace staticlib
-{
-    void dummy();
-}
+BEGIN_STATICLIB_NAMESPACE
+
+void dummy();
+
+END_STATICLIB_NAMESPACE

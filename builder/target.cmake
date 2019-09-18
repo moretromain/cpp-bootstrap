@@ -36,14 +36,26 @@ endfunction()
 
 # --
 
-macro(get_api_name name api_name)
+macro(get_cxx_name name cxx_name)
+    set(temp)
+    string(TOLOWER "${name}" temp)
+    string(REGEX REPLACE "(/)|(\\.)|(\\\\)|(::)|( )"  "_" temp "${temp}")
+    string(REGEX REPLACE "^([0123456789])" "_\\1" temp "${temp}")
+    string(REGEX REPLACE "([^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_])" "_" temp "${temp}")
+    set(${cxx_name} ${temp})
+    unset(temp)
+endmacro()
+
+# --
+
+macro(get_cpp_name name cpp_name)
     set(temp)
     string(REGEX REPLACE "([abcdefghijklmnopqrstuvwxyz])([ABCDEFGHIJKLMNOPQRSTUVWXYZ])" "\\1_\\2" temp "${name}")
     string(TOUPPER ${temp} temp)
     string(REGEX REPLACE "(/)|(\\.)|(\\\\)|(::)|( )"  "_" temp "${temp}")
     string(REGEX REPLACE "^([0123456789])" "_\\1" temp "${temp}")
     string(REGEX REPLACE "([^ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_])" "_" temp "${temp}")
-    set(${api_name} ${temp})
+    set(${cpp_name} ${temp})
     unset(temp)
 endmacro()
 
@@ -53,13 +65,19 @@ macro(_target_declare t)
     project(${t})
 
     set(${t}_KIND)
-    set(${t}_INCLUDE_DIRS)
+    set(${t}_PUBLIC_INCLUDE_DIRS)
     set(${t}_PRIVATE_INCLUDE_DIRS)
+    set(${t}_INTERFACE_INCLUDE_DIRS)
     set(${t}_SOURCES)
-    set(${t}_DEFS)
+    set(${t}_PUBLIC_DEFS)
     set(${t}_PRIVATE_DEFS)
-    set(${t}_DEPS)
+    set(${t}_INTERFACE_DEFS)
+    set(${t}_PUBLIC_COMPILE_FEATURES)
+    set(${t}_PRIVATE_COMPILE_FEATURES)
+    set(${t}_INTERFACE_COMPILE_FEATURES)
+    set(${t}_PUBLIC_DEPS)
     set(${t}_PRIVATE_DEPS)
+    set(${t}_INTERFACE_DEPS)
     set(${t}_INFO_PLIST)
     set(${t} OUTPUT_NAME)
 endmacro()
@@ -67,7 +85,11 @@ endmacro()
 # --
 
 macro(_target_begin t)
-    list(INSERT ${t}_INCLUDE_DIRS 0
+    list(INSERT ${t}_PUBLIC_INCLUDE_DIRS 0
+        ${${t}_SOURCE_DIR}
+        ${${t}_BINARY_DIR}
+    )
+    list(INSERT ${t}_INTERFACE_INCLUDE_DIRS 0
         ${${t}_SOURCE_DIR}
         ${${t}_BINARY_DIR}
     )
@@ -76,33 +98,48 @@ endmacro()
 # --
 
 macro(_target_generate_api_h t)
-    get_api_name(${t} API_NAME)
+    get_cpp_name(${t} CPP_NAME)
     get_filename_component(TEMPLATE_FILE "${BUILDER_SOURCE_DIR}/api.h.in" ABSOLUTE)
     configure_file("${BUILDER_SOURCE_DIR}/api.h.in" "${${t}_BINARY_DIR}/${t}_api.h" @ONLY)
     set_source_files_properties("${${t}_BINARY_DIR}/{${t}_api.h" PROPERTIES GENERATED TRUE)
     list(APPEND ${t}_SOURCES ${${t}_BINARY_DIR}/${t}_api.h)
-    list(INSERT ${t}_PRIVATE_DEFS   0 "${API_NAME}_BUILD")
-    list(INSERT ${t}_INTERFACE_DEFS 0 "${API_NAME}_LIB")
+    list(INSERT ${t}_PRIVATE_DEFS   0 "${CPP_NAME}_BUILD")
+    list(INSERT ${t}_INTERFACE_DEFS 0 "${CPP_NAME}_LIB")
+endmacro()
+
+# --
+
+macro(_target_generate_namespace_h t)
+    get_cxx_name(${t} CXX_NAME)
+    get_cpp_name(${t} CPP_NAME)
+    get_filename_component(TEMPLATE_FILE "${BUILDER_SOURCE_DIR}/namespace.h.in" ABSOLUTE)
+    configure_file("${BUILDER_SOURCE_DIR}/namespace.h.in" "${${t}_BINARY_DIR}/${t}_namespace.h" @ONLY)
+    set_source_files_properties("${${t}_BINARY_DIR}/{${t}_namespace.h" PROPERTIES GENERATED TRUE)
+    list(APPEND ${t}_SOURCES ${${t}_BINARY_DIR}/${t}_namespace.h)
 endmacro()
 
 # --
 
 macro(_target_import_properties t)
-    target_include_directories(${t} INTERFACE  ${${t}_INCLUDE_DIRS})
-    target_compile_definitions(${t} INTERFACE  ${${t}_DEFS})
-    target_link_libraries(${t}      INTERFACE  ${${t}_DEPS})
+    target_include_directories(${t} INTERFACE  ${${t}_INTERFACE_INCLUDE_DIRS})
+    target_compile_definitions(${t} INTERFACE  ${${t}_INTERFACE_DEFS})
+    target_compile_features(${t}    INTERFACE  ${${t}_INTERFACE_FEATURES})
+    target_link_libraries(${t}      INTERFACE  ${${t}_INTERFACE_DEPS})
 endmacro()
 
 # --
 
 macro(_target_populate_properties t)
-    target_include_directories(${t} PUBLIC      ${${t}_INCLUDE_DIRS})
-    target_include_directories(${t} INTERFACE   ${${t}_INTERFACE_INCLUDE_DIRS})
+    target_include_directories(${t} PUBLIC      ${${t}_PUBLIC_INCLUDE_DIRS})
     target_include_directories(${t} PRIVATE     ${${t}_PRIVATE_INCLUDE_DIRS})
-    target_compile_definitions(${t} PUBLIC      ${${t}_DEFS})
-    target_compile_definitions(${t} INTERFACE   ${${t}_INTERFACE_DEFS})
+    target_include_directories(${t} INTERFACE   ${${t}_INTERFACE_INCLUDE_DIRS})
+    target_compile_definitions(${t} PUBLIC      ${${t}_PUBLIC_DEFS})
     target_compile_definitions(${t} PRIVATE     ${${t}_PRIVATE_DEFS})
-    target_link_libraries(${t}      PUBLIC      ${${t}_DEPS})
+    target_compile_definitions(${t} INTERFACE   ${${t}_INTERFACE_DEFS})
+    target_compile_features(${t}    PUBLIC      ${${t}_PUBLIC_EATURES})
+    target_compile_features(${t}    PRIVATE     ${${t}_PRIVATE_FEATURES})
+    target_compile_features(${t}    INTERFACE   ${${t}_INTERFACE_FEATURES})
+    target_link_libraries(${t}      PUBLIC      ${${t}_PUBLIC_DEPS})
     target_link_libraries(${t}      INTERFACE   ${${t}_INTERFACE_DEPS})
     target_link_libraries(${t}      PRIVATE     ${${t}_PRIVATE_DEPS})
 
@@ -130,13 +167,19 @@ endmacro()
 # --
 
 macro(target_include_dirs)
-    list(APPEND ${PROJECT_NAME}_INCLUDE_DIRS ${ARGN})
+    list(APPEND ${PROJECT_NAME}_PUBLIC_INCLUDE_DIRS ${ARGN})
 endmacro()
 
 # --
 
 macro(target_private_include_dirs)
     list(APPEND ${PROJECT_NAME}_PRIVATE_INCLUDE_DIRS ${ARGN})
+endmacro()
+
+# --
+
+macro(target_interface_include_dirs)
+    list(APPEND ${PROJECT_NAME}_INTERFACE_INCLUDE_DIRS ${ARGN})
 endmacro()
 
 # --
@@ -148,7 +191,7 @@ endmacro()
 # --
 
 macro(target_defs)
-    list(APPEND ${PROJECT_NAME}_DEFS ${ARGN})
+    list(APPEND ${PROJECT_NAME}_PUBLIC_DEFS ${ARGN})
 endmacro()
 
 # --
@@ -159,14 +202,44 @@ endmacro()
 
 # --
 
+macro(target_interface_defs)
+    list(APPEND ${PROJECT_NAME}_INTERFACE_DEFS ${ARGN})
+endmacro()
+
+# --
+
 macro(target_deps)
-    list(APPEND ${PROJECT_NAME}_DEPS ${ARGN})
+    list(APPEND ${PROJECT_NAME}_PUBLIC_DEPS ${ARGN})
 endmacro()
 
 # --
 
 macro(target_private_deps)
     list(APPEND ${PROJECT_NAME}_PRIVATE_DEPS ${ARGN})
+endmacro()
+
+# --
+
+macro(target_interface_deps)
+    list(APPEND ${PROJECT_NAME}_INTERFACE_DEPS ${ARGN})
+endmacro()
+
+# --
+
+macro(target_features)
+    list(APPEND ${PROJECT_NAME}_PUBLIC_FEATURES ${ARGN})
+endmacro()
+
+# --
+
+macro(target_private_features)
+    list(APPEND ${PROJECT_NAME}_PRIVATE_FEATURES ${ARGN})
+endmacro()
+
+# --
+
+macro(target_interface_features)
+    list(APPEND ${PROJECT_NAME}_INTERFACE_FEATURES ${ARGN})
 endmacro()
 
 # --
@@ -194,7 +267,7 @@ endmacro()
 
 macro(import_shared_library)
     _target_begin(${PROJECT_NAME})
-    add_library(${t} INTERFACE)
+    add_library(${PROJECT_NAME} INTERFACE)
     _target_import_properties(${PROJECT_NAME})
     _target_end(${PROJECT_NAME})
 endmacro()
@@ -210,9 +283,39 @@ endmacro()
 
 # --
 
+macro(add_external_headers_library)
+    _target_begin(${PROJECT_NAME})
+    add_library(${PROJECT_NAME} INTERFACE)
+    _target_import_properties(${PROJECT_NAME})
+    _target_end(${PROJECT_NAME})
+endmacro()
+
+# --
+
+macro(add_external_static_library)
+    _target_begin(${PROJECT_NAME})
+    set(${PROJECT_NAME}_KIND "[STATIC LIB]")
+    add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
+    _target_populate_properties(${PROJECT_NAME})
+    _target_end(${PROJECT_NAME})
+endmacro()
+
+# --
+
+macro(add_external_shared_library)
+    _target_begin(${PROJECT_NAME})
+    set(${PROJECT_NAME}_KIND "[SHARED LIB]")
+    add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
+    _target_populate_properties(${PROJECT_NAME})
+    _target_end(${PROJECT_NAME})
+endmacro()
+
+# --
+
 macro(add_headers_library)
     _target_begin(${PROJECT_NAME})
     _target_generate_api_h(${PROJECT_NAME})
+    _target_generate_namespace_h(${PROJECT_NAME})
     add_library(${PROJECT_NAME} INTERFACE)
     _target_import_properties(${PROJECT_NAME})
     _target_end(${PROJECT_NAME})
@@ -223,6 +326,7 @@ endmacro()
 macro(add_static_library)
     _target_begin(${PROJECT_NAME})
     _target_generate_api_h(${PROJECT_NAME})
+    _target_generate_namespace_h(${PROJECT_NAME})
     set(${PROJECT_NAME}_KIND "[STATIC LIB]")
     add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
     _target_populate_properties(${PROJECT_NAME})
@@ -234,6 +338,7 @@ endmacro()
 macro(add_shared_library)
     _target_begin(${PROJECT_NAME})
     _target_generate_api_h(${PROJECT_NAME})
+    _target_generate_namespace_h(${PROJECT_NAME})
     set(${PROJECT_NAME}_KIND "[SHARED LIB]")
     add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
     _target_populate_properties(${PROJECT_NAME})
@@ -245,6 +350,7 @@ endmacro()
 macro(add_console_application)
     _target_begin(${PROJECT_NAME})
     _target_generate_api_h(${PROJECT_NAME})
+    _target_generate_namespace_h(${PROJECT_NAME})
     set(${PROJECT_NAME}_KIND "[CONSOLE APP]")
     add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
     _target_populate_properties(${PROJECT_NAME})
@@ -256,6 +362,7 @@ endmacro()
 macro(add_application)
     _target_begin(${PROJECT_NAME})
     _target_generate_api_h(${PROJECT_NAME})
+    _target_generate_namespace_h(${PROJECT_NAME})
     set(${PROJECT_NAME}_KIND "[APP]")
     add_executable(${PROJECT_NAME} MACOSX_BUNDLE WIN32 ${${PROJECT_NAME}_SOURCES})
     if(MACOS_BUILD)

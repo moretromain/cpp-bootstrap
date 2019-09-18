@@ -4,20 +4,30 @@
 #pragma once
 
 #if defined(_MSC_VER)
-#   if defined(@API_NAME@_BUILD)
-#       define @API_NAME@_API __declspec(dllexport)
-#   elif defined(@API_NAME@_LIB)
-#       define @API_NAME@_API __declspec(dllimport)
+#   if defined(@CPP_NAME@_BUILD)
+#       define @CPP_NAME@_API __declspec(dllexport)
+#   elif defined(@CPP_NAME@_LIB)
+#       define @CPP_NAME@_API __declspec(dllimport)
 #   else
-#       define @API_NAME@_API
+#       define @CPP_NAME@_API
 #   endif
-#elif defined(__GNUC__) && (__GNUC__ >= 4)
-#   if defined(@API_NAME@_LIB) || defined(@API_NAME@_BUILD)
-#       define @API_NAME@_API __attribute__((visibility("default")))
+#elif defined(__APPLE__) && defined(__MACH__)
+#   if defined(@CPP_NAME@_BUILD)
+#       define @CPP_NAME@_API __attribute__((visibility("default")))
+#   elif defined(@CPP_NAME@_LIB)
+#       define @CPP_NAME@_API __attribute__((visibility("default")))
 #   else
-#       define @API_NAME@_API
+#       define @CPP_NAME@_API
+#   endif
+#elif defined(__linux__)
+#   if defined(@CPP_NAME@_BUILD)
+#       define @CPP_NAME@_API __attribute__((visibility("default")))
+#   elif defined(@CPP_NAME@_LIB)
+#       define @CPP_NAME@_API __attribute__((visibility("default")))
+#   else
+#       define @CPP_NAME@_API
 #   endif
 #else
-#   define @API_NAME@_API
+#   define @CPP_NAME@_API
 #endif
 

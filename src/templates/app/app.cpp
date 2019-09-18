@@ -5,6 +5,12 @@
 #include <windows.h>
 #endif
 
+BEGIN_APP_NAMESPACE
+
+END_APP_NAMESPACE
+
+// --
+
 #if SYS_WINDOWS
 int WINAPI WinMain(HINSTANCE inInstance, HINSTANCE inPrevInstance,
                    LPSTR inCommandLine, int inShowCommand)

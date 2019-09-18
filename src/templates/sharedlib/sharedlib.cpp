@@ -1,10 +1,11 @@
 #include "sharedlib.h"
 #include <staticlib.h>
 
-namespace sharedlib
+BEGIN_SHAREDLIB_NAMESPACE
+
+void dummy()
 {
-    void dummy()
-    {
-        staticlib::dummy();
-    }
+    staticlib::dummy();
 }
+
+END_SHAREDLIB_NAMESPACE

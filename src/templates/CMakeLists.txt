@@ -1,3 +1,4 @@
+add_subdirectory(interfacelib)
 add_subdirectory(staticlib)
 add_subdirectory(sharedlib)
 add_subdirectory(consoleapp)

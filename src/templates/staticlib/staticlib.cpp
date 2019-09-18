@@ -1,9 +1,10 @@
 #include "staticlib.h"
 
-namespace staticlib
-{
-    void dummy()
-    {
+BEGIN_STATICLIB_NAMESPACE
 
-    }
+void dummy()
+{
+
 }
+
+END_STATICLIB_NAMESPACE

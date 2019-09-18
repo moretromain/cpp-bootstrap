@@ -1,6 +1,10 @@
 #include "sharedlib_api.h"
+#include "sharedlib_namespace.h"
+#include <staticlib.h>
+#include <core.h>
 
-namespace sharedlib
-{
-    SHAREDLIB_API void dummy();
-}
+BEGIN_SHAREDLIB_NAMESPACE
+
+SHAREDLIB_API void dummy();
+
+END_SHAREDLIB_NAMESPACE
