@@ -30,16 +30,25 @@ To do so, build targets are declared and populated through a set of CMake macros
 target()
 target_include_dirs()
 target_private_include_dirs()
+target_interface_include_dirs()
 target_sources()
 target_defs()
 target_private_defs()
+target_interface_defs()
 target_deps()
 target_private_deps()
+target_interface_deps()
+target_features()
+target_private_features()
+target_interface_features()
 target_info_plist()
 target_output_name()
 import_static_library()
 import_shared_library()
 import_headers_library()
+add_external_headers_library()
+add_external_static_library()
+add_external_shared_library()
 add_headers_library()
 add_static_library()
 add_shared_library()
@@ -50,6 +59,7 @@ Those macros are just syntactic sugar over raw CMake calls that allow to quickly
 
 Target dependencies can be either other targets or specific files (import libraries etc.), CMake takes care of managing dependencies like a champ.
 The 'private' target macros declare target properties that won't be propagated through dependencies.
+The 'interface' target macros declare target properties that will be propagated through CMake interface targets.
 
 All those macros are just built on top of raw CMake projects, targets and their associated properties, so it is still possible to mix pure and custom CMake code in the ```CMakeLists.txt``` files. Feel free to browse the builder's code for more information.
 The builder is fully compatible with CMake ```find_package()``` mechanism, and it is entirely possible to let CMake do all the heavy lifting when importing external dependencies, such as Boost, Qt or whatever else.
@@ -69,7 +79,7 @@ The builder takes care of setting basic C/CXX compiler flags that are suited for
   * remove RPATH stuff to avoid absolute paths in there
   * define usual Clang/ObjC stuff (don't link with ObjC runtime etc.)
 
-The builder will also generate a per-target ```target_api.h``` header for easier symbol management (defines a ```TARGET_API``` preprocessor macro that expands to the plaform specific stuff -dllexport/import, attribute visibility etc.-).
+The builder will also generate a per-target ```target_api.h``` and ```target_namesace.h``` header set for easier namespace and symbol management (defines a ```TARGET_API``` preprocessor macro that expands to the plaform specific stuff -dllexport/import, attribute visibility etc.-).
 
 ## What are the bare requirements in my CMake code ?
 
